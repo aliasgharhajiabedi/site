@@ -1,1 +1,830 @@
-test
+<!doctype html>
+<html lang="fa" dir="rtl">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>صفحه خصوصی</title>
+    <style>
+      @font-face {
+        font-family: "Vazirmatn";
+        src: url("assets/fonts/Vazirmatn-Regular.woff2") format("woff2");
+        font-weight: 400;
+        font-style: normal;
+        font-display: swap;
+      }
+
+      @font-face {
+        font-family: "Vazirmatn";
+        src: url("assets/fonts/Vazirmatn-Bold.woff2") format("woff2");
+        font-weight: 700;
+        font-style: normal;
+        font-display: swap;
+      }
+
+      :root {
+        color-scheme: dark;
+        --bg: #181110;
+        --card: rgba(255, 249, 241, 0.11);
+        --card-strong: rgba(255, 249, 241, 0.17);
+        --text: #fff9f2;
+        --muted: #e6d8ce;
+        --line: rgba(255, 232, 214, 0.22);
+        --accent: #d95576;
+        --accent-2: #d9b36a;
+        --wine: #5b2430;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        min-height: 100vh;
+        margin: 0;
+        font-family: "Vazirmatn", Tahoma, sans-serif;
+        background:
+          radial-gradient(circle at 85% 10%, rgba(217, 179, 106, 0.22), transparent 23rem),
+          radial-gradient(circle at 12% 88%, rgba(217, 85, 118, 0.3), transparent 26rem),
+          linear-gradient(135deg, #181110, #29201d 55%, #161210);
+        color: var(--text);
+      }
+
+      button,
+      input {
+        font: inherit;
+      }
+
+      button {
+        border: 0;
+        cursor: pointer;
+      }
+
+      .lock {
+        position: fixed;
+        inset: 0;
+        z-index: 5;
+        display: grid;
+        place-items: center;
+        padding: 1rem;
+        overflow: hidden;
+        background:
+          radial-gradient(circle at 22% 18%, rgba(217, 85, 118, 0.22), transparent 18rem),
+          radial-gradient(circle at 82% 82%, rgba(217, 179, 106, 0.18), transparent 20rem),
+          rgba(24, 17, 16, 0.95);
+        backdrop-filter: blur(20px);
+        transition:
+          opacity 0.35s ease,
+          visibility 0.35s ease;
+      }
+
+      .heart-cloud {
+        position: absolute;
+        inset: 0;
+        overflow: hidden;
+        pointer-events: none;
+      }
+
+      .heart-cloud span {
+        position: absolute;
+        color: rgba(255, 218, 226, 0.18);
+        font-size: clamp(2.5rem, 11vw, 8rem);
+        text-shadow: 0 1.5rem 4rem rgba(217, 85, 118, 0.28);
+      }
+
+      .heart-cloud span:nth-child(1) {
+        top: 9%;
+        right: 12%;
+        transform: rotate(-14deg);
+      }
+
+      .heart-cloud span:nth-child(2) {
+        bottom: 12%;
+        left: 10%;
+        transform: rotate(18deg);
+      }
+
+      .heart-cloud span:nth-child(3) {
+        top: 55%;
+        right: 5%;
+        font-size: clamp(1.8rem, 7vw, 4.5rem);
+        transform: rotate(10deg);
+      }
+
+      .lock.hide {
+        visibility: hidden;
+        opacity: 0;
+        pointer-events: none;
+      }
+
+      .login {
+        position: relative;
+        width: min(100%, 23rem);
+        padding: 1.55rem;
+        border: 1px solid var(--line);
+        border-radius: 1.35rem;
+        background:
+          linear-gradient(145deg, rgba(255, 249, 241, 0.16), rgba(91, 36, 48, 0.28)),
+          var(--card);
+        box-shadow:
+          0 2rem 5rem rgba(0, 0, 0, 0.42),
+          inset 0 1px 0 rgba(255, 255, 255, 0.12);
+        text-align: center;
+      }
+
+      .heart-badge {
+        display: grid;
+        width: 4rem;
+        height: 4rem;
+        place-items: center;
+        margin: 0 auto 1rem;
+        border: 1px solid rgba(255, 232, 214, 0.34);
+        border-radius: 999px;
+        background:
+          radial-gradient(circle at 30% 25%, rgba(255, 255, 255, 0.55), transparent 28%),
+          linear-gradient(135deg, #d95576, #d9b36a);
+        color: #fff8f0;
+        font-size: 2rem;
+        line-height: 1;
+        box-shadow: 0 1rem 2.2rem rgba(91, 36, 48, 0.34);
+      }
+
+      .login h1 {
+        margin: 0;
+        font-size: clamp(1.4rem, 5vw, 2rem);
+      }
+
+      .login p {
+        margin: 0.7rem 0 1.2rem;
+        color: var(--muted);
+        line-height: 1.9;
+      }
+
+      .password-row {
+        display: grid;
+        grid-template-columns: 1fr auto;
+        gap: 0.65rem;
+      }
+
+      .password-row input {
+        min-width: 0;
+        height: 3.2rem;
+        padding: 0 1rem;
+        border: 1px solid var(--line);
+        border-radius: 0.9rem;
+        outline: 0;
+        background: rgba(255, 255, 255, 0.1);
+        color: white;
+        text-align: center;
+      }
+
+      .password-row input:focus {
+        border-color: var(--accent-2);
+        box-shadow: 0 0 0 4px rgba(217, 179, 106, 0.16);
+      }
+
+      .enter-btn {
+        min-width: 5.2rem;
+        height: 3.2rem;
+        border-radius: 0.9rem;
+        background: linear-gradient(135deg, var(--accent), #b83f5e);
+        color: white;
+        font-weight: 700;
+      }
+
+      .error {
+        display: none;
+        margin-top: 0.8rem;
+        color: #ffbdca;
+      }
+
+      .error.show {
+        display: block;
+      }
+
+      .page {
+        display: grid;
+        min-height: 100vh;
+        place-items: center;
+        padding: clamp(1rem, 4vw, 3rem);
+      }
+
+      .layout {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) minmax(20rem, 27rem);
+        gap: clamp(1rem, 4vw, 2rem);
+        width: min(100%, 68rem);
+        align-items: stretch;
+      }
+
+      .photo {
+        overflow: hidden;
+        min-height: 28rem;
+        border: 1px solid var(--line);
+        border-radius: 1.4rem;
+        background: #202020;
+        box-shadow: 0 2rem 5rem rgba(0, 0, 0, 0.42);
+      }
+
+      .photo img {
+        display: block;
+        width: 100%;
+        height: 100%;
+        min-height: inherit;
+        object-fit: cover;
+      }
+
+      .panel {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        min-width: 0;
+        padding: clamp(1rem, 4vw, 1.6rem);
+        border: 1px solid var(--line);
+        border-radius: 1.4rem;
+        background: var(--card);
+        box-shadow: 0 2rem 5rem rgba(0, 0, 0, 0.42);
+        backdrop-filter: blur(18px);
+      }
+
+      h2 {
+        margin: 0;
+        font-size: clamp(2rem, 7vw, 3.5rem);
+        line-height: 1.3;
+      }
+
+      .desc {
+        margin: 0.9rem 0 1.15rem;
+        color: var(--muted);
+        line-height: 2;
+      }
+
+      .player {
+        padding: 0.85rem;
+        border: 1px solid var(--line);
+        border-radius: 1.1rem;
+        background:
+          linear-gradient(145deg, rgba(255, 249, 241, 0.16), rgba(91, 36, 48, 0.22)),
+          var(--card-strong);
+        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.1);
+      }
+
+      .controls {
+        display: grid;
+        grid-template-columns: 1fr auto;
+        gap: 0.8rem;
+        align-items: center;
+      }
+
+      .play {
+        display: grid;
+        width: 2.65rem;
+        height: 2.65rem;
+        place-items: center;
+        border-radius: 999px;
+        background:
+          radial-gradient(circle at 35% 25%, #fff, #fff2e3 42%, #d9b36a);
+        color: #3a171d;
+        font-size: 1.2rem;
+        font-weight: 700;
+        box-shadow: 0 0.85rem 1.8rem rgba(0, 0, 0, 0.28);
+      }
+
+      .play svg {
+        width: 1.25rem;
+        height: 1.25rem;
+      }
+
+      .waveform {
+        position: relative;
+        height: 3.15rem;
+        overflow: hidden;
+        border: 1px solid rgba(255, 232, 214, 0.2);
+        border-radius: 0.85rem;
+        background:
+          linear-gradient(180deg, rgba(255, 249, 241, 0.12), rgba(255, 249, 241, 0.035)),
+          rgba(20, 14, 14, 0.18);
+        cursor: pointer;
+        box-shadow:
+          inset 0 0 0 1px rgba(255, 255, 255, 0.04),
+          0 0.55rem 1.1rem rgba(0, 0, 0, 0.16);
+      }
+
+      .waveform::after {
+        position: absolute;
+        inset: 0;
+        content: "";
+        pointer-events: none;
+        background:
+          linear-gradient(90deg, rgba(255, 249, 241, 0.08), transparent 12%, transparent 88%, rgba(255, 249, 241, 0.08)),
+          radial-gradient(circle at 50% 50%, transparent 45%, rgba(0, 0, 0, 0.16));
+      }
+
+      .wave-canvas {
+        display: block;
+        width: 100%;
+        height: 100%;
+      }
+
+      .time {
+        direction: ltr;
+        min-width: 4.8rem;
+        color: var(--muted);
+        font-size: 0.86rem;
+        font-weight: 700;
+        text-align: left;
+        white-space: nowrap;
+      }
+
+      .volume {
+        display: grid;
+        grid-template-columns: auto 1fr auto;
+        gap: 0.65rem;
+        align-items: center;
+        margin-top: 0.7rem;
+      }
+
+      .mute {
+        display: grid;
+        width: 2.2rem;
+        height: 2.2rem;
+        place-items: center;
+        border-radius: 0.7rem;
+        background: rgba(255, 255, 255, 0.12);
+        color: #fff4e9;
+      }
+
+      .mute svg {
+        width: 1.15rem;
+        height: 1.15rem;
+      }
+
+      input[type="range"] {
+        width: 100%;
+        accent-color: var(--accent);
+      }
+
+      .file-error {
+        margin: 0;
+        padding: 1rem;
+        border: 1px solid rgba(255, 189, 202, 0.55);
+        border-radius: 1rem;
+        color: #ffbdca;
+        background: rgba(239, 71, 111, 0.13);
+        line-height: 1.8;
+      }
+
+      audio {
+        display: none;
+      }
+
+      @media (max-width: 820px) {
+        .page {
+          align-items: start;
+        }
+
+        .layout {
+          grid-template-columns: 1fr;
+        }
+
+        .photo {
+          min-height: 0;
+          aspect-ratio: 4 / 3;
+          border-radius: 1.1rem;
+        }
+
+        .photo img {
+          min-height: 0;
+        }
+
+        .panel {
+          border-radius: 1.1rem;
+        }
+      }
+
+      @media (max-width: 480px) {
+        .password-row {
+          grid-template-columns: 1fr;
+        }
+
+        .enter-btn {
+          width: 100%;
+        }
+
+        .player {
+          padding: 0.75rem;
+        }
+
+        .controls {
+          gap: 0.65rem;
+        }
+
+        .waveform {
+          height: 2.9rem;
+        }
+
+        .play {
+          width: 2.5rem;
+          height: 2.5rem;
+        }
+
+        .time {
+          text-align: left;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <section class="lock" id="lock">
+      <div class="heart-cloud" aria-hidden="true">
+        <span>♥</span>
+        <span>♥</span>
+        <span>♥</span>
+      </div>
+      <form class="login" id="loginForm">
+        <div class="heart-badge" aria-hidden="true">♥</div>
+        <h1>ورود به صفحه خصوصی</h1>
+        <p>رمز را وارد کن تا صفحه نمایش داده شود.</p>
+        <div class="password-row">
+          <input id="passwordInput" type="password" placeholder="رمز عبور" autocomplete="current-password" />
+          <button class="enter-btn" type="submit">ورود</button>
+        </div>
+        <div class="error" id="error">رمز اشتباه است.</div>
+      </form>
+    </section>
+
+    <main class="page" id="page" hidden>
+      <section class="layout">
+        <div class="photo" id="photoBox">
+          <img id="mainImage" alt="تصویر صفحه" />
+        </div>
+
+        <article class="panel">
+          <h2 id="title"></h2>
+          <p class="desc" id="description"></p>
+
+          <div class="player" id="player">
+            <div class="controls">
+              <div class="waveform" id="waveform" role="slider" aria-label="موقعیت پخش" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" tabindex="0">
+                <canvas class="wave-canvas" id="waveCanvas"></canvas>
+              </div>
+              <button class="play" id="playBtn" type="button" aria-label="پخش">
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                  <path d="M8 5v14l11-7z" fill="currentColor"></path>
+                </svg>
+              </button>
+            </div>
+
+            <div class="volume">
+              <span class="time" id="time">0:00 / 0:00</span>
+              <input id="volume" type="range" min="0" max="1" step="0.01" value="0.85" aria-label="میزان صدا" />
+              <button class="mute" id="muteBtn" type="button" aria-label="قطع صدا">
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                  <path d="M11 5 6 9H3v6h3l5 4V5Z" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
+                  <path d="M15.5 8.5a5 5 0 0 1 0 7" fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="2"></path>
+                  <path d="M18.5 5.5a9 9 0 0 1 0 13" fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="2"></path>
+                </svg>
+              </button>
+            </div>
+          </div>
+
+          <audio id="audio" preload="metadata"></audio>
+        </article>
+      </section>
+    </main>
+
+    <script>
+      const imageFiles = [
+        "image.avif",
+        "image.webp",
+        "image.jpg",
+        "image.jpeg",
+        "image.png",
+        "image.gif",
+        "image.svg",
+        "image.bmp"
+      ];
+
+      const musicFiles = [
+        { path: "music.mp3", type: "audio/mpeg" },
+        { path: "music.m4a", type: "audio/mp4" },
+        { path: "music.aac", type: "audio/aac" },
+        { path: "music.ogg", type: "audio/ogg" },
+        { path: "music.opus", type: "audio/ogg; codecs=opus" },
+        { path: "music.wav", type: "audio/wav" },
+        { path: "music.flac", type: "audio/flac" },
+        { path: "music.webm", type: "audio/webm" }
+      ];
+
+      const $ = (selector) => document.querySelector(selector);
+
+      const els = {
+        audio: $("#audio"),
+        description: $("#description"),
+        error: $("#error"),
+        image: $("#mainImage"),
+        lock: $("#lock"),
+        loginForm: $("#loginForm"),
+        muteBtn: $("#muteBtn"),
+        page: $("#page"),
+        passwordInput: $("#passwordInput"),
+        photoBox: $("#photoBox"),
+        playBtn: $("#playBtn"),
+        player: $("#player"),
+        time: $("#time"),
+        title: $("#title"),
+        volume: $("#volume"),
+        waveCanvas: $("#waveCanvas"),
+        waveform: $("#waveform")
+      };
+
+      let config = null;
+      let isSeeking = false;
+      let waveformPeaks = [];
+      let waveformProgress = 0;
+
+      const icons = {
+        play: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z" fill="currentColor"></path></svg>',
+        pause: '<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="7" y="5" width="3.8" height="14" rx="1" fill="currentColor"></rect><rect x="13.2" y="5" width="3.8" height="14" rx="1" fill="currentColor"></rect></svg>',
+        volume: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M11 5 6 9H3v6h3l5 4V5Z" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path><path d="M15.5 8.5a5 5 0 0 1 0 7" fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="2"></path><path d="M18.5 5.5a9 9 0 0 1 0 13" fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="2"></path></svg>',
+        muted: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M11 5 6 9H3v6h3l5 4V5Z" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path><path d="m16 9 5 5" fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="2"></path><path d="m21 9-5 5" fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="2"></path></svg>'
+      };
+
+      async function exists(path) {
+        try {
+          const response = await fetch(path, { method: "HEAD", cache: "no-store" });
+          return response.ok;
+        } catch {
+          return false;
+        }
+      }
+
+      async function firstExisting(paths) {
+        for (const path of paths) {
+          if (await exists(path)) return path;
+        }
+        return null;
+      }
+
+      async function loadMediaFiles() {
+        const imagePath = await firstExisting(imageFiles);
+
+        if (imagePath) {
+          els.image.src = imagePath;
+        } else {
+          els.photoBox.innerHTML = '<p class="file-error">فایل تصویر پیدا نشد. نام فایل باید image باشد؛ مثل image.jpg یا image.png</p>';
+        }
+
+        for (const file of musicFiles) {
+          if (els.audio.canPlayType(file.type) && (await exists(file.path))) {
+            els.audio.src = file.path;
+            prepareWaveform(file.path);
+            return;
+          }
+        }
+
+        els.player.innerHTML = '<p class="file-error">فایل موزیک پیدا نشد یا مرورگر نمی‌تواند آن را پخش کند. نام فایل باید music باشد؛ مثل music.mp3 یا music.m4a</p>';
+      }
+
+      function formatTime(value) {
+        if (!Number.isFinite(value)) return "0:00";
+        const minutes = Math.floor(value / 60);
+        const seconds = Math.floor(value % 60).toString().padStart(2, "0");
+        return `${minutes}:${seconds}`;
+      }
+
+      function updateProgress() {
+        const duration = els.audio.duration || 0;
+        const percent = duration ? (els.audio.currentTime / duration) * 100 : 0;
+        waveformProgress = percent / 100;
+        els.waveform.setAttribute("aria-valuenow", Math.round(percent).toString());
+        els.time.textContent = `${formatTime(els.audio.currentTime)} / ${formatTime(duration)}`;
+        drawWaveform();
+      }
+
+      function syncPlayButton() {
+        els.playBtn.innerHTML = els.audio.paused ? icons.play : icons.pause;
+        els.playBtn.setAttribute("aria-label", els.audio.paused ? "پخش" : "توقف");
+      }
+
+      function syncMuteButton() {
+        const muted = els.audio.muted || els.audio.volume === 0;
+        els.muteBtn.innerHTML = muted ? icons.muted : icons.volume;
+        els.muteBtn.setAttribute("aria-label", muted ? "وصل صدا" : "قطع صدا");
+      }
+
+      function seek(clientX) {
+        if (!Number.isFinite(els.audio.duration)) return;
+        const rect = els.waveform.getBoundingClientRect();
+        const ratio = Math.min(Math.max((clientX - rect.left) / rect.width, 0), 1);
+        els.audio.currentTime = ratio * els.audio.duration;
+        updateProgress();
+      }
+
+      function unlock() {
+        els.lock.classList.add("hide");
+        els.page.hidden = false;
+        requestAnimationFrame(drawWaveform);
+        els.audio.play().catch(syncPlayButton);
+      }
+
+      function fallbackPeaks(count = 96) {
+        return Array.from({ length: count }, (_, index) => {
+          const a = Math.sin(index * 0.32) * 0.5 + 0.5;
+          const b = Math.sin(index * 0.09 + 1.8) * 0.5 + 0.5;
+          return 0.18 + a * 0.42 + b * 0.32;
+        });
+      }
+
+      async function prepareWaveform(path) {
+        waveformPeaks = fallbackPeaks();
+        drawWaveform();
+
+        try {
+          const response = await fetch(path, { cache: "no-store" });
+          const buffer = await response.arrayBuffer();
+          const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+          if (!AudioContextClass) return;
+
+          const audioContext = new AudioContextClass();
+          const audioBuffer = await audioContext.decodeAudioData(buffer.slice(0));
+          const channel = audioBuffer.getChannelData(0);
+          const samples = 86;
+          const blockSize = Math.floor(channel.length / samples);
+          const peaks = [];
+
+          for (let i = 0; i < samples; i += 1) {
+            let sum = 0;
+            const start = i * blockSize;
+            const end = Math.min(start + blockSize, channel.length);
+
+            for (let j = start; j < end; j += 1) {
+              sum += Math.abs(channel[j]);
+            }
+
+            peaks.push(Math.max(0.08, Math.min(sum / Math.max(end - start, 1) * 3.5, 1)));
+          }
+
+          waveformPeaks = peaks;
+          audioContext.close?.();
+          drawWaveform();
+        } catch {
+          waveformPeaks = fallbackPeaks();
+          drawWaveform();
+        }
+      }
+
+      function drawWaveform() {
+        const canvas = els.waveCanvas;
+        const wrapper = els.waveform;
+        if (!canvas || !wrapper) return;
+
+        const rect = wrapper.getBoundingClientRect();
+        if (!rect.width || !rect.height) return;
+
+        const ratio = window.devicePixelRatio || 1;
+        const width = Math.floor(rect.width * ratio);
+        const height = Math.floor(rect.height * ratio);
+
+        if (canvas.width !== width || canvas.height !== height) {
+          canvas.width = width;
+          canvas.height = height;
+        }
+
+        const ctx = canvas.getContext("2d");
+        const peaks = waveformPeaks.length ? waveformPeaks : fallbackPeaks();
+        const center = height / 2;
+        const padding = 12 * ratio;
+        const usableWidth = width - padding * 2;
+        const barGap = 3.4 * ratio;
+        const barWidth = Math.max(2.4 * ratio, usableWidth / peaks.length - barGap);
+        const maxHeight = height * 0.64;
+        const progressX = padding + usableWidth * waveformProgress;
+
+        ctx.clearRect(0, 0, width, height);
+
+        const bgGradient = ctx.createLinearGradient(0, 0, width, 0);
+        bgGradient.addColorStop(0, "rgba(255, 244, 229, 0.26)");
+        bgGradient.addColorStop(1, "rgba(217, 179, 106, 0.3)");
+
+        const activeGradient = ctx.createLinearGradient(0, 0, width, 0);
+        activeGradient.addColorStop(0, "#c94766");
+        activeGradient.addColorStop(0.58, "#d9a85f");
+        activeGradient.addColorStop(1, "#ffe7b4");
+
+        peaks.forEach((peak, index) => {
+          const x = padding + index * (barWidth + barGap);
+          const barHeight = Math.max(5 * ratio, peak * maxHeight);
+          const y = center - barHeight / 2;
+          const radius = Math.min(barWidth / 2, 3 * ratio);
+
+          ctx.fillStyle = x <= progressX ? activeGradient : bgGradient;
+          roundRect(ctx, x, y, barWidth, barHeight, radius);
+          ctx.fill();
+        });
+
+        ctx.fillStyle = "#fff7ec";
+        ctx.shadowColor = "rgba(217, 85, 118, 0.55)";
+        ctx.shadowBlur = 12 * ratio;
+        ctx.beginPath();
+        ctx.arc(progressX, center, 4.2 * ratio, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.shadowBlur = 0;
+      }
+
+      function roundRect(ctx, x, y, width, height, radius) {
+        ctx.beginPath();
+        ctx.moveTo(x + radius, y);
+        ctx.lineTo(x + width - radius, y);
+        ctx.quadraticCurveTo(x + width, y, x + width, y + radius);
+        ctx.lineTo(x + width, y + height - radius);
+        ctx.quadraticCurveTo(x + width, y + height, x + width - radius, y + height);
+        ctx.lineTo(x + radius, y + height);
+        ctx.quadraticCurveTo(x, y + height, x, y + height - radius);
+        ctx.lineTo(x, y + radius);
+        ctx.quadraticCurveTo(x, y, x + radius, y);
+        ctx.closePath();
+      }
+
+      async function init() {
+        const response = await fetch("config.json", { cache: "no-store" });
+        config = await response.json();
+
+        document.title = config.title || "صفحه خصوصی";
+        els.title.textContent = config.title || "";
+        els.description.textContent = config.description || "";
+        await loadMediaFiles();
+      }
+
+      els.loginForm.addEventListener("submit", (event) => {
+        event.preventDefault();
+
+        if (els.passwordInput.value === config?.password) {
+          els.error.classList.remove("show");
+          unlock();
+          return;
+        }
+
+        els.passwordInput.value = "";
+        els.passwordInput.focus();
+        els.error.classList.add("show");
+      });
+
+      els.playBtn.addEventListener("click", () => {
+        if (!els.audio.src) return;
+        els.audio.paused ? els.audio.play() : els.audio.pause();
+      });
+
+      els.muteBtn.addEventListener("click", () => {
+        els.audio.muted = !els.audio.muted;
+        syncMuteButton();
+      });
+
+      els.volume.addEventListener("input", () => {
+        els.audio.volume = Number(els.volume.value);
+        els.audio.muted = els.audio.volume === 0;
+        syncMuteButton();
+      });
+
+      els.waveform.addEventListener("pointerdown", (event) => {
+        isSeeking = true;
+        els.waveform.setPointerCapture(event.pointerId);
+        seek(event.clientX);
+      });
+
+      els.waveform.addEventListener("pointermove", (event) => {
+        if (isSeeking) seek(event.clientX);
+      });
+
+      els.waveform.addEventListener("pointerup", (event) => {
+        isSeeking = false;
+        els.waveform.releasePointerCapture(event.pointerId);
+      });
+
+      els.waveform.addEventListener("pointercancel", () => {
+        isSeeking = false;
+      });
+
+      els.waveform.addEventListener("keydown", (event) => {
+        if (!["ArrowLeft", "ArrowRight"].includes(event.key)) return;
+        event.preventDefault();
+        const step = event.key === "ArrowLeft" ? -5 : 5;
+        els.audio.currentTime = Math.min(Math.max(els.audio.currentTime + step, 0), els.audio.duration || 0);
+      });
+
+      window.addEventListener("resize", drawWaveform);
+
+      els.audio.volume = Number(els.volume.value);
+      els.audio.addEventListener("loadedmetadata", updateProgress);
+      els.audio.addEventListener("timeupdate", updateProgress);
+      els.audio.addEventListener("play", syncPlayButton);
+      els.audio.addEventListener("pause", syncPlayButton);
+      els.audio.addEventListener("ended", syncPlayButton);
+      syncPlayButton();
+      syncMuteButton();
+
+      init().catch(() => {
+        document.body.innerHTML = '<p class="file-error">فایل config.json خوانده نشد. صفحه را با سرور محلی اجرا کن.</p>';
+      });
+    </script>
+  </body>
+</html>
